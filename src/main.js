@@ -5,6 +5,8 @@ import store from './store';
 import apis from '@/request/api';
 import ElementUI from 'element-ui';
 import VueQuillEditor from 'vue-quill-editor';
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/styles/reset.css';
 import 'quill/dist/quill.core.css';
@@ -13,6 +15,7 @@ import 'quill/dist/quill.bubble.css';
 
 Vue.use(VueQuillEditor);
 Vue.use(ElementUI);
+Vue.use(mavonEditor);
 
 Vue.config.productionTip = false;
 Vue.prototype.$apis = apis;

@@ -69,12 +69,30 @@ pre {
 /* Text-level semantics
    ========================================================================== */
 
+/*包含以下四种的链接*/
 /**
  * Remove the gray background on active links in IE 10.
  */
 
 a {
+	text-decoration: none !important;
 	background-color: transparent;
+}
+/*正常的未被访问过的链接*/
+a:link {
+	text-decoration: none !important;
+}
+/*已经访问过的链接*/
+a:visited {
+	text-decoration: none !important;
+}
+/*鼠标划过(停留)的链接*/
+a:hover {
+	text-decoration: none !important;
+}
+/* 正在点击的链接*/
+a:active {
+	text-decoration: none !important;
 }
 
 /**

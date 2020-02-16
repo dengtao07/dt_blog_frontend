@@ -9,8 +9,7 @@
 				@focus="onEditorFocus($event)"
 				@ready="onEditorReady($event)"
 				@change="onEditorChange($event)"
-			>
-			</quill-editor>
+			></quill-editor>
 			<el-button type="primary" @click="saveEditorContent">保存</el-button>
 		</div>
 	</div>

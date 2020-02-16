@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home/Home.vue';
-import Article from '../views/Article/Article.vue';
+import MarkDownEditor from '../components/Editor/MarkDownEditor.vue';
 
 Vue.use(VueRouter);
 
@@ -21,9 +21,17 @@ const routes = [
 			import(/* webpackChunkName: "about" */ '../views/About.vue')
 	},
 	{
-		path: '/article',
-		name: 'Article',
-		component: Article
+		path: '/articlemd',
+		name: 'Articlemd',
+		component: MarkDownEditor
+	},
+	{
+		path: '/article-detail/:id',
+		name: 'ArticleDetail',
+		component: () =>
+			import(
+				/* webpackChunkName: "about" */ '../views/ArticleDetail/ArticleDetail.vue'
+			)
 	}
 ];
 
