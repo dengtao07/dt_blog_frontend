@@ -32,8 +32,8 @@ export default {
     async getHomeArticleList() {
       const response = await this.$apis.getHomeArticleList();
       this.loading = false;
-      if (response && response.data.code === "1") {
-        this.articleList = response.data.data;
+      if (response) {
+        this.articleList = response.data.article;
       } else {
         this.articleList = [];
       }
