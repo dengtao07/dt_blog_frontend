@@ -89,8 +89,9 @@ export default {
     // 因为当守卫执行前，组件实例还没被创建
 
     next(async vm => {
-      let response = await vm.$apis.getMarkdownSource();
-      vm.encodeedHtml = decodeURI(response.data.html);
+      let articleId = +vm.$route.params.id;
+      let response = await vm.$apis.getArticleDetail({ articleId: articleId });
+      vm.encodeedHtml = decodeURI(response.data.artilce.contentHtml);
       vm.extractCatalog();
     });
   }

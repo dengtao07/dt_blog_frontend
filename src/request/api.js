@@ -1,4 +1,5 @@
-import http from './http';
+import http from './http.js';
+import base from './config.js';
 
 const testRequest = () => {
 	return http.get(
@@ -6,8 +7,21 @@ const testRequest = () => {
 	);
 };
 
-const getHomeArticleList = () => {
-	return http.get('http://rap2api.taobao.org/app/mock/244591/article');
+const getHomeArticleList = async () => {
+	const response = await http.get(`${base.dev}/article-list`);
+	return (response && response.data) || {};
+};
+
+const saveArticle = async (params) => {
+	const response = await http.post(`${base.dev}/save-article`, params);
+	return (response && response.data) || {};
+};
+
+const getArticleDetail = async (params) => {
+	const response = await http.get(`${base.dev}/article-detail`, {
+		params: params
+	});
+	return (response && response.data) || {};
 };
 
 const getMarkdownSource = () => {
@@ -17,7 +31,9 @@ const getMarkdownSource = () => {
 const apis = {
 	testRequest,
 	getHomeArticleList,
-	getMarkdownSource
+	getMarkdownSource,
+	saveArticle,
+	getArticleDetail
 };
 
 export default apis;

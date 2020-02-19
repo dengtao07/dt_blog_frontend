@@ -9,7 +9,7 @@
             <div>
               <h4 class="article-header">{{ article.title }}</h4>
               <p class="article-abstract">{{ article.abstract }}</p>
-              <p>{{ article.time }}</p>
+              <p>{{ article.createTime }}</p>
             </div>
           </router-link>
         </li>
@@ -32,8 +32,9 @@ export default {
     async getHomeArticleList() {
       const response = await this.$apis.getHomeArticleList();
       this.loading = false;
-      if (response) {
-        this.articleList = response.data.article;
+      if (response.code === '1') {
+        this.articleList = response.data.articleList;
+    
       } else {
         this.articleList = [];
       }
