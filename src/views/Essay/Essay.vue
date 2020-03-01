@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div class="home-banner" @click="handleClick">首页</div>
     <div class="loading-tip" v-loading="loading" v-if="loading"></div>
     <transition name="fade">
       <ul class="article-list" v-if="articleList.length > 0 && !loading">
@@ -21,7 +20,7 @@
 
 <script>
 export default {
-  name: "Home",
+  name: "Essay",
   data() {
     return {
       articleList: [],
@@ -32,9 +31,8 @@ export default {
     async getHomeArticleList() {
       const response = await this.$apis.getHomeArticleList();
       this.loading = false;
-      if (response.code === '1') {
+      if (response.code === "1") {
         this.articleList = response.data.articleList;
-    
       } else {
         this.articleList = [];
       }

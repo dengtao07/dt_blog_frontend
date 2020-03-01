@@ -1,28 +1,21 @@
 <template>
-  <div @click="backToTop" v-show="show" class="to-top-button">
-    <i class="el-icon-caret-top"></i>
-  </div>
+  <transition name="fade">
+    <div @click="backToTop" v-show="backToTopshow" class="to-top-button">
+      <i class="el-icon-arrow-up"></i>
+    </div>
+  </transition>
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
+import { backToTopBtnShowable, debounce } from "../utils/utils";
 export default {
   name: "BackToTop",
-  data() {
-    return {
-      show: false
-    };
+  computed: {
+    ...mapState(["backToTopshow"])
   },
   mounted() {
-    window.onscroll = () => {
-      if (
-        window.document.body.scrollTop > 100 ||
-        window.document.documentElement.scrollTop > 100
-      ) {
-        this.show = true;
-      } else {
-        this.show = false;
-      }
-    };
+    window.onscroll = debounce(backToTopBtnShowable.bind(this));
   },
   methods: {
     backToTop() {
@@ -35,16 +28,29 @@ export default {
 
 <style scoped lang="scss">
 .to-top-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  width: 40px;
+  height: 40px;
   background-color: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
   cursor: pointer;
-  .el-icon-caret-top {
-    font-size: 23px;
+  .el-icon-arrow-up {
+    font-size: 25px;
+    color: #666;
   }
+}
+.fade-enter-active {
+  transition: all 1s;
+}
+.fade-enter {
+  opacity: 0;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-leave-active {
+  transition: all 1s;
 }
 </style>
