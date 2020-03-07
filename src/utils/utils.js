@@ -1,3 +1,6 @@
+import store from '../store/index';
+import { Message } from 'element-ui';
+
 const debounce = function(fn, threshold = 100) {
 	let timeout = null;
 	return function() {
@@ -34,9 +37,9 @@ const backToTopBtnShowable = function() {
 		window.document.body.scrollTop > 100 ||
 		window.document.documentElement.scrollTop > 100
 	) {
-		this.$store.commit('changeBackToTopShowable', { show: true });
+		store.commit('changeBackToTopShowable', { show: true });
 	} else {
-		this.$store.commit('changeBackToTopShowable', { show: false });
+		store.commit('changeBackToTopShowable', { show: false });
 	}
 };
 
@@ -66,17 +69,46 @@ const formatedDate = () => {
 const showMessage = function(message, type = '') {
 	//四种，success，error，warning，不传的时候是普通信息
 	if (!type) {
-		this.$message({
+		Message({
 			showClose: true,
 			message: message
 		});
 		return;
 	}
-	this.$message({
+	Message({
 		showClose: true,
 		message: message,
 		type: type
 	});
 };
 
-export { debounce, throttle, backToTopBtnShowable, formatedDate, showMessage };
+//获取页面顶部被卷起来的高度
+const getScrollTop = () => {
+	return Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+};
+
+//获取页面文档的总高度
+const getDocumentHeight = () => {
+	//现代浏览器（IE9+和其他浏览器）和IE8的document.body.scrollHeight和document.documentElement.scrollHeight都可以
+	return Math.max(
+		document.body.scrollHeight,
+		document.documentElement.scrollHeight
+	);
+};
+//页面浏览器视口的高度
+const getWindowHeight = () => {
+	return document.compatMode === 'CSS1Compat'
+		? document.documentElement.clientHeight
+		: document.body.clientHeight;
+};
+
+export {
+	debounce,
+	throttle,
+	backToTopBtnShowable,
+	formatedDate,
+	showMessage,
+	getScrollTop,
+	getDocumentHeight,
+	getWindowHeight
+};

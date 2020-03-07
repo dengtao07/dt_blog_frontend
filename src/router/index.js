@@ -1,12 +1,22 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Blog from '../views/Blog/Blog.vue';
+import vuex from '../store/index';
 
 Vue.use(VueRouter);
 
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
 	return routerPush.call(this, location).catch((error) => error);
+};
+const state = vuex.state;
+
+const editPermission = (next) => {
+	if (state.username === 'admin' && state.role === '0') {
+		next();
+	} else {
+		next('/');
+	}
 };
 
 const routes = [
@@ -41,7 +51,10 @@ const routes = [
 		component: () =>
 			import(
 				/* webpackChunkName: "about" */ '../views/ArticleEdit/MarkDownEditor.vue'
-			)
+			),
+		beforeEnter: (to, from, next) => {
+			editPermission(next);
+		}
 	},
 	{
 		path: '/article-edit/new',
@@ -49,7 +62,15 @@ const routes = [
 		component: () =>
 			import(
 				/* webpackChunkName: "about" */ '../views/ArticleEdit/MarkDownEditor.vue'
-			)
+			),
+		beforeEnter: (to, from, next) => {
+			editPermission(next);
+		}
+	},
+	{
+		path: '*',
+		name: '404',
+		redirect: '/'
 	}
 ];
 

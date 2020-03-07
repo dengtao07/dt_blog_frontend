@@ -140,17 +140,17 @@ export default {
 					});
 					if (response.data.result) {
 						this.$emit('closeDialog');
-						showMessage.call(this, '登录成功', 'success');
+						showMessage('登录成功', 'success');
 						this.saveUserProfile({
 							role: response.data.result.role,
 							isLogined: true,
 							username: response.data.result.username
 						});
 					} else {
-						showMessage.call(this, response.msg, 'error');
+						showMessage(response.msg, 'error');
 					}
 				} else {
-					showMessage.call(this, '请检查填写是否正确', 'error');
+					showMessage('请检查填写是否正确', 'error');
 				}
 			});
 		},
@@ -163,12 +163,12 @@ export default {
 					});
 					if (response.data.response.affectedRows === 1) {
 						this.$emit('closeDialog');
-						showMessage.call(this, '注册成功', 'success');
+						showMessage('注册成功', 'success');
 					} else {
-						showMessage.call(this, '注册失败', 'error');
+						showMessage('注册失败', 'error');
 					}
 				} else {
-					showMessage.call(this, '请检查填写是否正确', 'error');
+					showMessage('请检查填写是否正确', 'error');
 				}
 			});
 		}

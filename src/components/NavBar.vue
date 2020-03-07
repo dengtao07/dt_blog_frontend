@@ -87,7 +87,7 @@ export default {
 					username: '',
 					isLogined: false
 				});
-				showMessage.call(this, '登出成功', 'success');
+				showMessage('登出成功', 'success');
 			}
 		},
 		isMenuActive(type) {

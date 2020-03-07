@@ -2,8 +2,10 @@ import http from './http.js';
 import base from './config.js';
 
 //博文相关接口
-const getHomeArticleList = async () => {
-	const response = await http.get(`${base.dev}/blog/article-list`);
+const getHomeArticleList = async (params) => {
+	const response = await http.get(`${base.dev}/blog/article-list`, {
+		params: params
+	});
 	return (response && response.data) || {};
 };
 
@@ -19,6 +21,18 @@ const updateArticle = async (params) => {
 
 const getArticleDetail = async (params) => {
 	const response = await http.get(`${base.dev}/blog/article-detail`, {
+		params: params
+	});
+	return (response && response.data) || {};
+};
+
+const saveComment = async (params) => {
+	const response = await http.post(`${base.dev}/blog/save-comment`, params);
+	return (response && response.data) || {};
+};
+
+const getComment = async (params) => {
+	const response = await http.get(`${base.dev}/blog/get-comment`, {
 		params: params
 	});
 	return (response && response.data) || {};
@@ -59,7 +73,9 @@ const apis = {
 	usernameUseable,
 	userLogin,
 	userLogout,
-	checkLogin
+	checkLogin,
+	saveComment,
+	getComment
 };
 
 export default apis;

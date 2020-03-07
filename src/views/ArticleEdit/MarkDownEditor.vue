@@ -85,19 +85,19 @@ export default {
 		},
 		checkArticleValid(articleInfo) {
 			if (!articleInfo.title) {
-				showMessage.call(this, '未填写文章标题', 'error');
+				showMessage('未填写文章标题', 'error');
 				return false;
 			}
 			if (!articleInfo.tags) {
-				showMessage.call(this, '未填写文章标签', 'error');
+				showMessage('未填写文章标签', 'error');
 				return false;
 			}
 			if (!articleInfo.abstract) {
-				showMessage.call(this, '未填写文章摘要', 'error');
+				showMessage('未填写文章摘要', 'error');
 				return false;
 			}
 			if (!articleInfo.contentMd) {
-				showMessage.call(this, '没有文章内容', 'error');
+				showMessage('没有文章内容', 'error');
 				return false;
 			}
 			return true;
@@ -127,9 +127,9 @@ export default {
 			}
 			if (response.data.response.affectedRows === 1) {
 				this.postingArticle = false;
-				showMessage.call(this, '提交成功', 'success');
+				showMessage('提交成功', 'success');
 			} else {
-				showMessage.call(this, '提交失败', 'error');
+				showMessage('提交失败', 'error');
 			}
 		},
 		handleTagClose(tag) {

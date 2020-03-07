@@ -2,7 +2,7 @@
 	<div class="article-wrapper">
 		<div class="loading-tip" v-loading="loading" v-if="loading"></div>
 		<transition name="fade">
-			<ul class="article-list" v-if="articleList.length > 0 && !loading">
+			<ul class="article-list">
 				<li
 					v-for="article of articleList"
 					:key="article.id"
@@ -17,8 +17,8 @@
 										v-for="(tag, index) of articleTags(article)"
 										type="success"
 										:key="index"
-										>{{ tag }}
-									</el-tag>
+										>{{ tag }}</el-tag
+									>
 								</span>
 							</h2>
 							<p class="article-abstract">{{ article.abstract }}</p>
@@ -28,38 +28,84 @@
 				</li>
 			</ul>
 		</transition>
-		<div v-if="articleList.length === 0 && !loading"></div>
+		<div
+			class="loading-more-tip"
+			v-loading="loadingMore"
+			v-if="loadingMore"
+		></div>
+		<div class="nomore-tip" v-if="nomoreTipShowable">---到底咯---</div>
+		<div class="nodata-tip" v-if="articleList.length === 0 && !loading">
+			---暂无数据---
+		</div>
 	</div>
 </template>
 
 <script>
+import {
+	debounce,
+	backToTopBtnShowable,
+	getScrollTop,
+	getDocumentHeight,
+	getWindowHeight
+} from '../../utils/utils';
 export default {
 	name: 'Blog',
 	data() {
 		return {
 			articleList: [],
-			loading: true
+			loading: true,
+			pageIndex: 1,
+			nomore: false,
+			nomoreTipShowable: false,
+			loadingMore: false,
+			pageScrollDistance: 0,
+			scrollToGetNewArticle: debounce(this.scrollToGetNewArticleFunc)
 		};
 	},
+	computed: {},
 	methods: {
-		async getHomeArticleList() {
-			const response = await this.$apis.getHomeArticleList();
+		async getHomeArticleList(pageIndex) {
+			const response = await this.$apis.getHomeArticleList({
+				pageIndex: pageIndex
+			});
 			this.loading = false;
+			this.loadingMore = false;
 			if (response.code === '1') {
-				this.articleList = response.data.articleList;
+				this.articleList = this.articleList.concat(response.data.articleList);
+				this.nomore = response.data.nomore;
+				this.nomoreTipShowable = response.data.nomore;
 			} else {
 				this.articleList = [];
 			}
 		},
-		handleClick() {
-			this.$router.push('/articlemd');
+		loadMoreArticle() {
+			this.getHomeArticleList(++this.pageIndex);
 		},
 		articleTags(article) {
 			return article.tags.split(',').slice(0, 3);
+		},
+		scrollToGetNewArticleFunc() {
+			let needLoadMore =
+				getScrollTop() + getWindowHeight() + 50 > getDocumentHeight();
+			if (needLoadMore && !this.nomore) {
+				this.loadingMore = true;
+				//暂时不能再滚动加载数据
+				this.nomore = true;
+				this.loadMoreArticle();
+			}
+			this.pageScrollDistance = getScrollTop();
 		}
 	},
 	created() {
-		this.getHomeArticleList();
+		this.getHomeArticleList(this.pageIndex);
+	},
+	activated() {
+		document.documentElement.scrollTop = this.pageScrollDistance;
+		document.body.scrollTop = this.pageScrollDistance;
+		window.addEventListener('scroll', this.scrollToGetNewArticle);
+	},
+	deactivated() {
+		window.removeEventListener('scroll', this.scrollToGetNewArticle);
 	}
 };
 </script>
@@ -67,15 +113,6 @@ export default {
 <style scoped lang="scss">
 .article-wrapper {
 	width: 60%;
-	.loading-tip {
-		margin-top: 100px;
-	}
-	.fade-enter-active {
-		transition: all 1s;
-	}
-	.fade-enter {
-		opacity: 0;
-	}
 	.article-list {
 		padding: 0;
 		list-style: none;
@@ -119,5 +156,24 @@ export default {
 			}
 		}
 	}
+	.loading-more-tip {
+		margin-top: 40px;
+	}
+	.nomore-tip {
+		text-align: center;
+		color: #666;
+		font-size: 15px;
+	}
+	.nodata-tip {
+		text-align: center;
+		color: #666;
+		font-size: 15px;
+	}
+}
+.fade-enter-active {
+	transition: all 1s;
+}
+.fade-enter {
+	opacity: 0;
 }
 </style>
