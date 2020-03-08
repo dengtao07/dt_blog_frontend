@@ -9,7 +9,8 @@ export default new Vuex.Store({
 		backToTopshow: false, //控制返回顶部按钮是否展示
 		role: '1',
 		isLogined: false,
-		username: ''
+		username: '',
+		newComnentSubmitted: 0
 	},
 	mutations: {
 		saveEcodeedHtml(state, encodeedHtml) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
 			state.role = payload.role;
 			state.isLogined = payload.isLogined;
 			state.username = payload.username;
+		},
+		changeCommentSubmitState(state) {
+			state.newComnentSubmitted++;
 		}
 	},
 	actions: {},

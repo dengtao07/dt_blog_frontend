@@ -60,7 +60,6 @@ const errorHandle = (status, other) => {
 			break;
 		default:
 			tip('服务器开小差了，请稍后再试！');
-			console.log(other);
 	}
 };
 

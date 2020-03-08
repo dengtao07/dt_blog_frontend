@@ -19,6 +19,7 @@ import {
 } from 'element-ui';
 import VueQuillEditor from 'vue-quill-editor';
 import mavonEditor from 'mavon-editor';
+import animated from 'animate.css';
 import 'mavon-editor/dist/css/index.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/hljs.scss';
@@ -42,6 +43,7 @@ Vue.use(DropdownItem);
 Vue.use(Popover);
 Vue.use(VueQuillEditor);
 Vue.use(mavonEditor);
+Vue.use(animated);
 
 Vue.config.productionTip = false;
 Vue.prototype.$apis = apis;
