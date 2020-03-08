@@ -82,7 +82,6 @@ export default {
 			let commentInfo = {
 				author: this.username || this.userInfoForm.username,
 				content: this.textarea,
-				time: formatedDate(),
 				articleId: this.comIndex.articleId.split('/')[2],
 				commentId: this.comIndex.commentId,
 				replyTo: this.comIndex.replyTo
