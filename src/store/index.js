@@ -10,7 +10,8 @@ export default new Vuex.Store({
 		role: '1',
 		isLogined: false,
 		username: '',
-		newComnentSubmitted: 0
+		newComnentSubmitted: 0,
+		blogOrEssay: 'blog'
 	},
 	mutations: {
 		saveEcodeedHtml(state, encodeedHtml) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
 		},
 		changeCommentSubmitState(state) {
 			state.newComnentSubmitted++;
+		},
+		changeBlogOrEssay(state, payload) {
+			state.blogOrEssay = payload.blogOrEssay;
 		}
 	},
 	actions: {},

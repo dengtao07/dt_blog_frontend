@@ -28,30 +28,27 @@ const routes = [
 	{
 		path: '/essay',
 		name: 'Essay',
-		component: () =>
-			import(/* webpackChunkName: "about" */ '../views/Essay/Essay.vue')
+		component: () => import('../views/Essay/Essay.vue')
+	},
+	{
+		path: '/essay/:id',
+		name: 'EssayBlog',
+		component: () => import('../views/DevBlogDetail/DevBlogDetail.vue')
 	},
 	{
 		path: '/photo',
 		name: 'Photo',
-		component: () =>
-			import(/* webpackChunkName: "about" */ '../views/Photo/Photo.vue')
+		component: () => import('../views/Photo/Photo.vue')
 	},
 	{
 		path: '/blog/:id',
 		name: 'DevBlog',
-		component: () =>
-			import(
-				/* webpackChunkName: "about" */ '../views/ArticleDetail/ArticleDetail.vue'
-			)
+		component: () => import('../views/DevBlogDetail/DevBlogDetail.vue')
 	},
 	{
 		path: '/article-edit/:id',
 		name: 'ArticleEdit',
-		component: () =>
-			import(
-				/* webpackChunkName: "about" */ '../views/ArticleEdit/MarkDownEditor.vue'
-			),
+		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
 		beforeEnter: (to, from, next) => {
 			editPermission(next);
 		}
@@ -59,10 +56,7 @@ const routes = [
 	{
 		path: '/article-edit/new',
 		name: 'newArticle',
-		component: () =>
-			import(
-				/* webpackChunkName: "about" */ '../views/ArticleEdit/MarkDownEditor.vue'
-			),
+		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
 		beforeEnter: (to, from, next) => {
 			editPermission(next);
 		}
