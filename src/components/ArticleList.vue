@@ -55,7 +55,11 @@ export default {
   methods: {
     ...mapMutations(["changeBlogOrEssay"]),
     async getHomeArticleList(pageIndex) {
-      const response = await this.$apis.getHomeArticleList({
+      let requestApi =
+        this.blogOrEssay === "dev"
+          ? this.$apis.getDevArticleList
+          : this.$apis.getEssayArticleList;
+      const response = await requestApi({
         pageIndex: pageIndex
       });
       this.loading = false;

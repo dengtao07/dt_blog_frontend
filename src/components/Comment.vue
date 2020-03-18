@@ -7,7 +7,9 @@
         </div>
         <div class="reply-meta">
           <span>{{ comment.time }}</span>
-          <span @click="openEmojiInput(comment.id)" class="reply-btn">回复</span>
+          <span @click="openEmojiInput(comment.id)" class="reply-btn">
+            <img class="reply-icon" src="../assets/images/reply.svg" /> 回复
+          </span>
         </div>
         <emoji-input
           v-if="visibleEmojiInputIndex === comment.id"
@@ -35,7 +37,9 @@
           </div>
           <div class="reply-meta">
             <span>{{ reply.time }}</span>
-            <span @click="openEmojiInput(reply.id)" class="reply-btn">回复</span>
+            <span @click="openEmojiInput(reply.id)" class="reply-btn">
+              <img class="reply-icon" src="../assets/images/reply.svg" />回复
+            </span>
           </div>
           <emoji-input
             v-if="visibleEmojiInputIndex === reply.id"
@@ -125,6 +129,13 @@ export default {
   color: #606266;
   .reply-btn {
     visibility: hidden;
+    display: flex;
+    align-items: center;
+    .reply-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
   }
 }
 </style>

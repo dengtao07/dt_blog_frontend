@@ -7,10 +7,10 @@
 <script>
 import ArticleList from "../../components/ArticleList";
 export default {
-  name: "Blog",
+  name: "Dev",
   data() {
     return {
-      blogOrEssay: "blog"
+      blogOrEssay: "dev"
     };
   },
   components: {

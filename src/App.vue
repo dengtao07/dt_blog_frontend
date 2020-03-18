@@ -2,7 +2,7 @@
   <div id="app">
     <nav-bar></nav-bar>
     <div class="main">
-      <keep-alive :include="['Blog', 'Essay']">
+      <keep-alive :include="['Dev', 'Essay']">
         <router-view />
       </keep-alive>
     </div>

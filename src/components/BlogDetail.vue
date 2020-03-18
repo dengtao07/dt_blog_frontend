@@ -6,15 +6,24 @@
         :class="{'article-wrapper':true, 'essay-textalign-center':blogOrEssay === 'essay'}"
         v-if="!loading"
       >
+        <article-side-bar
+          class="article-side-bar"
+          :nums="articleInfo.likeNums"
+          :like="articleInfo.doUserLike"
+          @addLikeNum="addLikeNum"
+          @navigateToComment="navigateToComment"
+        ></article-side-bar>
         <h1 class="article-header">{{ articleInfo.title }}</h1>
         <div class="article-meta">
           <el-tag v-for="(tag, index) of articleInfo.tags" type="success" :key="index">{{ tag }}</el-tag>
-          <span class="article-updatetime">更新于{{ articleInfo.createTime }}</span>
-          <router-link :to="`/article-edit/${articleId}`" v-if="role === '0'">编辑</router-link>
-          <router-link to="/article-edit/new" v-if="role === '0'">新建文章</router-link>
+          <span class="article-updatetime">更新于{{ articleInfo.updatedTime }}</span>
+          <span v-if="role === '0'">
+            <a @click="navigateToEdit(0)">编辑</a>
+            <a @click="navigateToEdit(1)">新建文章</a>
+          </span>
         </div>
         <div v-html="articleInfo.contentHtml" class="article-container" ref="content"></div>
-        <div class="article-comment">
+        <div class="article-comment" id="comment">
           <h3 class="comment-header">留言</h3>
           <emoji-input :index="{ articleId: articlePath, commentId: '' }"></emoji-input>
           <comment :comments="comments"></comment>
@@ -23,7 +32,7 @@
     </transition>
     <transition name="article">
       <catalog
-        v-if="!loading && blogOrEssay === 'blog'"
+        v-if="!loading && blogOrEssay === 'dev'"
         :catalogList="catalogList"
         :firstVisibleElemetHref="firstVisibleElemetHref"
         class="article-catalog"
@@ -36,6 +45,7 @@
 import Catalog from "./Catalog";
 import Comment from "./Comment";
 import EmojiInput from "./EmojiInput";
+import ArticleSideBar from "./ArticleSideBar";
 import { debounce, throttle, backToTopBtnShowable } from "@/utils/utils.js";
 import { mapMutations, mapState } from "vuex";
 export default {
@@ -48,13 +58,16 @@ export default {
       firstVisibleElemetHref: "",
       articleId: 1,
       loading: true,
-      watchPageScroll: debounce(this.watchPageScrollFunc)
+      watchPageScroll: throttle(this.watchPageScrollFunc),
+      blogOrEssay: "dev",
+      getArticleDetailApi: ""
     };
   },
   components: {
     Catalog,
     Comment,
-    EmojiInput
+    EmojiInput,
+    ArticleSideBar
   },
   methods: {
     watchPageScrollFunc() {
@@ -74,6 +87,10 @@ export default {
           this.firstVisibleElemetHref = this.catalogList[index].href;
           break;
         }
+        //如果整个文章的标题都不在视区，高亮最后一个标题
+        this.firstVisibleElemetHref = this.catalogList[
+          this.catalogList.length - 1
+        ].href;
       }
     },
     extractCatalog() {
@@ -92,10 +109,39 @@ export default {
         this.firstVisibleElemetHref = this.catalogList[0].href;
       }
       window.addEventListener("scroll", this.watchPageScroll);
+    },
+    navigateToEdit(type) {
+      let url =
+        type === 0
+          ? `/${this.blogOrEssay}-article-edit/${this.articleId}`
+          : `/${this.blogOrEssay}-article-edit/new`;
+      this.$router.push(url);
+    },
+    addLikeNum() {
+      let articleInfo = this.articleInfo;
+      articleInfo.doUserLike
+        ? (articleInfo.likeNums -= 1)
+        : (articleInfo.likeNums += 1);
+      articleInfo.doUserLike = !articleInfo.doUserLike;
+      this.submitLike();
+    },
+    navigateToComment() {
+      document.querySelector("#comment").scrollIntoView(true);
+    },
+    async submitLike() {
+      let curDoUserLike = this.articleInfo.doUserLike;
+      let likeArticleApi =
+        this.blogOrEssay === "dev"
+          ? this.$apis.likeDevArticleApi
+          : this.$apis.likeEssayArticleApi;
+      await likeArticleApi({
+        id: this.articleId,
+        doUserLike: curDoUserLike
+      });
     }
   },
   computed: {
-    ...mapState(["role", "newComnentSubmitted", "blogOrEssay"]),
+    ...mapState(["role", "newComnentSubmitted"]),
     articlePath() {
       return this.$route.path;
     }
@@ -103,7 +149,7 @@ export default {
   watch: {
     async newComnentSubmitted(newVal, oldVal) {
       if (newVal !== oldVal) {
-        let response = await this.$apis.getArticleDetail({
+        let response = await this.getArticleDetailApi({
           articleId: this.articleId
         });
         let { comments } = response.data.article;
@@ -118,39 +164,51 @@ export default {
   },
   async created() {
     this.articleId = +this.$route.params.id;
-    let getArticleDetailApi =
-      this.blogOrEssay === "blog"
-        ? this.$apis.getArticleDetail
-        : this.$apis.getArticleDetail;
-    let response = await getArticleDetailApi({
+    this.blogOrEssay = this.$route.path.indexOf("dev") > 0 ? "dev" : "essay";
+    this.getArticleDetailApi =
+      this.blogOrEssay === "dev"
+        ? this.$apis.getDevArticleDetail
+        : this.$apis.getEssayArticleDetail;
+    let response = await this.getArticleDetailApi({
       articleId: this.articleId
     });
     let {
       title,
       tags,
       author,
-      createTime,
-      contentHtml,
-      contentMd,
-      comments
+      create_time,
+      content_html,
+      content_md,
+      comments,
+      updated_time,
+      like_nums,
+      doUserLike
     } = response.data.article;
     this.articleInfo = {
       title,
       tags: tags.split(","),
       author,
-      createTime,
-      contentHtml: decodeURI(contentHtml),
-      contentMd: decodeURI(contentMd),
-      comments
+      createTime: create_time,
+      updatedTime: updated_time,
+      contentHtml: decodeURI(content_html),
+      contentMd: decodeURI(content_md),
+      comments,
+      likeNums: like_nums,
+      doUserLike
     };
+    this.doUserLikeSnapshot = doUserLike;
     this.comments = comments;
     this.loading = false;
     this.$nextTick(() => {
-      this.extractCatalog();
+      if (this.blogOrEssay === "dev") {
+        this.extractCatalog();
+      }
     });
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.watchPageScroll);
+    if (this.blogOrEssay === "dev") {
+      window.removeEventListener("scroll", this.watchPageScroll);
+    }
   }
 };
 </script>
@@ -160,6 +218,11 @@ export default {
   width: 70%;
   .article-wrapper {
     width: 85%;
+    .article-side-bar {
+      position: fixed;
+      margin-left: -80px;
+      top: 40%;
+    }
     .el-tag {
       margin-right: 10px;
     }
@@ -183,6 +246,7 @@ export default {
       a {
         font-size: 14px;
         margin-left: 10px;
+        cursor: pointer;
       }
     }
     .article-comment {

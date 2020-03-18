@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Blog from '../views/Blog/Blog.vue';
+import Blog from '../views/Dev/Dev.vue';
 import vuex from '../store/index';
 
 Vue.use(VueRouter);
@@ -22,7 +22,7 @@ const editPermission = (next) => {
 const routes = [
 	{
 		path: '/',
-		name: 'Blog',
+		name: 'Dev',
 		component: Blog
 	},
 	{
@@ -41,21 +41,37 @@ const routes = [
 		component: () => import('../views/Photo/Photo.vue')
 	},
 	{
-		path: '/blog/:id',
+		path: '/dev/:id',
 		name: 'DevBlog',
 		component: () => import('../views/DevBlogDetail/DevBlogDetail.vue')
 	},
 	{
-		path: '/article-edit/:id',
-		name: 'ArticleEdit',
+		path: '/dev-article-edit/:id',
+		name: 'DevArticleEdit',
 		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
 		beforeEnter: (to, from, next) => {
 			editPermission(next);
 		}
 	},
 	{
-		path: '/article-edit/new',
-		name: 'newArticle',
+		path: '/essay-article-edit/:id',
+		name: 'EssayArticleEdit',
+		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
+		beforeEnter: (to, from, next) => {
+			editPermission(next);
+		}
+	},
+	{
+		path: '/dev-article-edit/new',
+		name: 'NewDevArticle',
+		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
+		beforeEnter: (to, from, next) => {
+			editPermission(next);
+		}
+	},
+	{
+		path: '/essay-article-edit/new',
+		name: 'NewEssayArticle',
 		component: () => import('../views/ArticleEdit/MarkDownEditor.vue'),
 		beforeEnter: (to, from, next) => {
 			editPermission(next);

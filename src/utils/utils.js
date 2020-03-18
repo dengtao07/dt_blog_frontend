@@ -13,7 +13,7 @@ const debounce = function(fn, threshold = 100) {
 	};
 };
 
-const throttle = function(fn, threshold = 200) {
+const throttle = function(fn, threshold = 100) {
 	let start = Date.now();
 	let timer = null;
 	return function() {

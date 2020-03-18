@@ -2,39 +2,86 @@ import http from './http.js';
 import base from './config.js';
 
 //博文相关接口
-const getHomeArticleList = async (params) => {
-	const response = await http.get(`${base.dev}/blog/article-list`, {
+const getDevArticleList = async (params) => {
+	const response = await http.get(`${base.dev}/blog/dev-article-list`, {
 		params: params
 	});
 	return (response && response.data) || {};
 };
 
-const newArticle = async (params) => {
-	const response = await http.post(`${base.dev}/blog/new-article`, params);
-	return (response && response.data) || {};
-};
-
-const updateArticle = async (params) => {
-	const response = await http.post(`${base.dev}/blog/update-article`, params);
-	return (response && response.data) || {};
-};
-
-const getArticleDetail = async (params) => {
-	const response = await http.get(`${base.dev}/blog/article-detail`, {
+const getEssayArticleList = async (params) => {
+	const response = await http.get(`${base.dev}/blog/essay-article-list`, {
 		params: params
 	});
 	return (response && response.data) || {};
 };
 
-const saveComment = async (params) => {
-	const response = await http.post(`${base.dev}/blog/save-comment`, params);
+const newDevArticle = async (params) => {
+	const response = await http.post(`${base.dev}/blog/new-dev-article`, params);
 	return (response && response.data) || {};
 };
 
-const getComment = async (params) => {
-	const response = await http.get(`${base.dev}/blog/get-comment`, {
+const newEssayArticle = async (params) => {
+	const response = await http.post(
+		`${base.dev}/blog/new-essay-article`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const updateDevArticle = async (params) => {
+	const response = await http.post(
+		`${base.dev}/blog/update-dev-article`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const updateEssayArticle = async (params) => {
+	const response = await http.post(
+		`${base.dev}/blog/update-essay-article`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const getDevArticleDetail = async (params) => {
+	const response = await http.get(`${base.dev}/blog/dev-article-detail`, {
 		params: params
 	});
+	return (response && response.data) || {};
+};
+
+const getEssayArticleDetail = async (params) => {
+	const response = await http.get(`${base.dev}/blog/essay-article-detail`, {
+		params: params
+	});
+	return (response && response.data) || {};
+};
+
+const saveDevComment = async (params) => {
+	const response = await http.post(`${base.dev}/blog/save-dev-comment`, params);
+	return (response && response.data) || {};
+};
+
+const saveEssayComment = async (params) => {
+	const response = await http.post(
+		`${base.dev}/blog/save-essay-comment`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const likeDevArticleApi = async (params) => {
+	const response = await http.post(`${base.dev}/blog/like-dev-article`, params);
+	return (response && response.data) || {};
+};
+
+const likeEssayArticleApi = async (params) => {
+	const response = await http.post(
+		`${base.dev}/blog/like-essay-article`,
+		params
+	);
 	return (response && response.data) || {};
 };
 
@@ -65,17 +112,23 @@ const checkLogin = async () => {
 };
 
 const apis = {
-	getHomeArticleList,
-	newArticle,
-	updateArticle,
-	getArticleDetail,
+	getDevArticleList,
+	getEssayArticleList,
+	newDevArticle,
+	newEssayArticle,
+	updateDevArticle,
+	updateEssayArticle,
+	getDevArticleDetail,
+	getEssayArticleDetail,
 	userRegister,
 	usernameUseable,
 	userLogin,
 	userLogout,
 	checkLogin,
-	saveComment,
-	getComment
+	saveDevComment,
+	saveEssayComment,
+	likeDevArticleApi,
+	likeEssayArticleApi
 };
 
 export default apis;

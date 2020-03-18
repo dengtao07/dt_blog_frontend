@@ -11,7 +11,7 @@ export default new Vuex.Store({
 		isLogined: false,
 		username: '',
 		newComnentSubmitted: 0,
-		blogOrEssay: 'blog'
+		blogOrEssay: 'dev'
 	},
 	mutations: {
 		saveEcodeedHtml(state, encodeedHtml) {
