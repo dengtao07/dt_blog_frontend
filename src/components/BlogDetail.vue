@@ -141,7 +141,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["role", "newComnentSubmitted"]),
+    ...mapState(["role", "newComnentSubmitted", "isLogined"]),
     articlePath() {
       return this.$route.path;
     }
@@ -154,6 +154,20 @@ export default {
         });
         let { comments } = response.data.article;
         this.comments = comments;
+      }
+    },
+
+    //当用户登录或者登出后，校验用户点赞状态
+    async isLogined(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        let checkUserLikeStatusApi =
+          this.blogOrEssay === "dev"
+            ? this.$apis.checkDevUserLikeStatus
+            : this.$apis.checkEssayUserLikeStatus;
+        let response = await checkUserLikeStatusApi({
+          id: this.articleId
+        });
+        this.articleInfo.doUserLike = response.data.doUserLike;
       }
     }
   },
@@ -196,7 +210,6 @@ export default {
       likeNums: like_nums,
       doUserLike
     };
-    this.doUserLikeSnapshot = doUserLike;
     this.comments = comments;
     this.loading = false;
     this.$nextTick(() => {

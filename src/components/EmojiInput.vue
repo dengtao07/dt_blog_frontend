@@ -79,7 +79,7 @@ export default {
       emojiImg.alt = emoji.alt;
       emojiImg.setAttribute(
         "style",
-        "height:20px; width:20px; draggable:false; margin:0px 2px; npm vertical-align: sub;"
+        "height:20px; width:20px; draggable:false; margin:0px 2px; vertical-align: text-top;"
       );
       this.$refs.inputContent.appendChild(emojiImg);
       this.isCommentEmpty = false;

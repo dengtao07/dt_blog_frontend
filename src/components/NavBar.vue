@@ -54,7 +54,7 @@ export default {
       menuList: [
         { name: "开发", url: "", type: "dev" },
         { name: "瞎写", url: "essay", type: "essay" },
-        { name: "瞎拍", url: "photo", type: "photo" }
+        // { name: "瞎拍", url: "photo", type: "photo" }
       ]
     };
   },

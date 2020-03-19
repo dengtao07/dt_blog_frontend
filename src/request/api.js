@@ -85,6 +85,16 @@ const likeEssayArticleApi = async (params) => {
 	return (response && response.data) || {};
 };
 
+const checkDevUserLikeStatus = async (params) => {
+	const response = await http.post(`${base.dev}/blog/check-dev-like`, params);
+	return (response && response.data) || {};
+};
+
+const checkEssayUserLikeStatus = async (params) => {
+	const response = await http.post(`${base.dev}/blog/check-essay-like`, params);
+	return (response && response.data) || {};
+};
+
 //用户相关接口
 const userRegister = async (params) => {
 	const response = await http.post(`${base.dev}/user/register`, params);
@@ -128,7 +138,9 @@ const apis = {
 	saveDevComment,
 	saveEssayComment,
 	likeDevArticleApi,
-	likeEssayArticleApi
+	likeEssayArticleApi,
+	checkDevUserLikeStatus,
+	checkEssayUserLikeStatus
 };
 
 export default apis;
