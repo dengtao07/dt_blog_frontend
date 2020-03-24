@@ -75,7 +75,7 @@ export default {
     ...mapMutations(["changeCommentSubmitState"]),
     insertEmojiImg(emoji) {
       let emojiImg = document.createElement("img");
-      emojiImg.src = emoji.src;
+      emojiImg.src = require("../assets/emoji/" + emoji.filename + ".png");
       emojiImg.alt = emoji.alt;
       emojiImg.setAttribute(
         "style",
