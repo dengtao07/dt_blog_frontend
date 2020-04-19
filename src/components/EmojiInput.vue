@@ -110,7 +110,7 @@ export default {
         author: this.username || this.userInfoForm.username,
         content: inputContent,
         articleId: this.comIndex.articleId.split("/")[2],
-        commentId: this.comIndex.commentId,
+        commentId: this.comIndex.commentId + "",
         replyTo: this.comIndex.replyTo
       };
       this.submittingComment = true;

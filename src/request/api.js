@@ -11,14 +11,14 @@ if (process.env.NODE_ENV == 'development') {
 //博文相关接口
 const getDevArticleList = async (params) => {
 	const response = await http.get(`${beseUrl}/blog/dev-article-list`, {
-		params: params
+		params: params,
 	});
 	return (response && response.data) || {};
 };
 
 const getEssayArticleList = async (params) => {
 	const response = await http.get(`${beseUrl}/blog/essay-article-list`, {
-		params: params
+		params: params,
 	});
 	return (response && response.data) || {};
 };
@@ -51,14 +51,14 @@ const updateEssayArticle = async (params) => {
 
 const getDevArticleDetail = async (params) => {
 	const response = await http.get(`${beseUrl}/blog/dev-article-detail`, {
-		params: params
+		params: params,
 	});
 	return (response && response.data) || {};
 };
 
 const getEssayArticleDetail = async (params) => {
 	const response = await http.get(`${beseUrl}/blog/essay-article-detail`, {
-		params: params
+		params: params,
 	});
 	return (response && response.data) || {};
 };
@@ -71,6 +71,22 @@ const saveDevComment = async (params) => {
 const saveEssayComment = async (params) => {
 	const response = await http.post(
 		`${beseUrl}/blog/save-essay-comment`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const deleteDevComment = async (params) => {
+	const response = await http.post(
+		`${beseUrl}/blog/delete-dev-comment`,
+		params
+	);
+	return (response && response.data) || {};
+};
+
+const deleteEssayComment = async (params) => {
+	const response = await http.post(
+		`${beseUrl}/blog/delete-essay-comment`,
 		params
 	);
 	return (response && response.data) || {};
@@ -144,7 +160,9 @@ const apis = {
 	likeDevArticleApi,
 	likeEssayArticleApi,
 	checkDevUserLikeStatus,
-	checkEssayUserLikeStatus
+	checkEssayUserLikeStatus,
+	deleteDevComment,
+	deleteEssayComment,
 };
 
 export default apis;

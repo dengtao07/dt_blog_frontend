@@ -6,10 +6,15 @@
           <span v-html="`${comment.author}：${comment.content}`"></span>
         </div>
         <div class="reply-meta">
-          <span>{{ comment.time }}</span>
-          <span @click="openEmojiInput(comment.id)" class="reply-btn">
-            <img class="reply-icon" src="../assets/images/reply.svg" /> 回复
-          </span>
+          <div>{{ comment.time }}</div>
+          <div class="opt-btn">
+            <span v-if="role==='0'" @click="deleteComment(comment.id)">
+              <img src="../assets/images/delete.svg" /> 删除
+            </span>
+            <span @click="openEmojiInput(comment.id)">
+              <img src="../assets/images/reply.svg" /> 回复
+            </span>
+          </div>
         </div>
         <emoji-input
           v-if="visibleEmojiInputIndex === comment.id"
@@ -36,10 +41,15 @@
             </span>
           </div>
           <div class="reply-meta">
-            <span>{{ reply.time }}</span>
-            <span @click="openEmojiInput(reply.id)" class="reply-btn">
-              <img class="reply-icon" src="../assets/images/reply.svg" />回复
-            </span>
+            <div>{{ reply.time }}</div>
+            <div class="opt-btn">
+              <span v-if="role==='0'" @click="deleteComment(reply.id)">
+                <img src="../assets/images/delete.svg" /> 删除
+              </span>
+              <span @click="openEmojiInput(reply.id)">
+                <img src="../assets/images/reply.svg" /> 回复
+              </span>
+            </div>
           </div>
           <emoji-input
             v-if="visibleEmojiInputIndex === reply.id"
@@ -58,6 +68,8 @@
 
 <script>
 import EmojiInput from "./EmojiInput";
+import { mapState, mapMutations } from "vuex";
+import { showMessage } from "../utils/utils.js";
 export default {
   name: "Comment",
   props: ["comments"],
@@ -70,6 +82,7 @@ export default {
     EmojiInput
   },
   computed: {
+    ...mapState(["role"]),
     articlePath() {
       return this.$route.path;
     },
@@ -79,6 +92,24 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["changeCommentSubmitState"]),
+    async deleteComment(id) {
+      let blogOrEssay = this.$route.path.indexOf("dev") > 0 ? "dev" : "essay";
+      let saveCommentApi =
+        blogOrEssay === "dev"
+          ? this.$apis.deleteDevComment
+          : this.$apis.deleteEssayComment;
+      let response = await saveCommentApi({
+        articleId: this.articlePath.split("/")[2],
+        id
+      });
+      if (response && response.data && response.data.code === 1) {
+        showMessage("提交成功", "success");
+        this.changeCommentSubmitState();
+      } else {
+        showMessage("提交失败，请稍后再试", "error");
+      }
+    },
     openEmojiInput(id) {
       this.visibleEmojiInputIndex =
         this.visibleEmojiInputIndex === id ? "" : id;
@@ -97,7 +128,7 @@ export default {
   .reply-btn-common {
     &:hover {
       ::v-deep {
-        .reply-btn {
+        .opt-btn {
           cursor: pointer;
           visibility: visible;
         }
@@ -127,14 +158,19 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   color: #606266;
-  .reply-btn {
+  .opt-btn {
     visibility: hidden;
     display: flex;
     align-items: center;
-    .reply-icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
+    span {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
+      }
     }
   }
 }
