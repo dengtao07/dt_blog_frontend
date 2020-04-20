@@ -16,7 +16,7 @@ const tip = (msg) => {
 		message: msg,
 		duration: 1000,
 		type: 'error',
-		showClose: true
+		showClose: true,
 	});
 };
 
@@ -28,8 +28,8 @@ const toLogin = () => {
 	router.replace({
 		path: '/login',
 		query: {
-			redirect: router.currentRoute.fullPath
-		}
+			redirect: router.currentRoute.fullPath,
+		},
 	});
 };
 
