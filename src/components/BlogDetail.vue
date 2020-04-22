@@ -87,10 +87,6 @@ export default {
           this.firstVisibleElemetHref = this.catalogList[index].href;
           break;
         }
-        //如果整个文章的标题都不在视区，高亮最后一个标题
-        this.firstVisibleElemetHref = this.catalogList[
-          this.catalogList.length - 1
-        ].href;
       }
     },
     extractCatalog() {
