@@ -2,10 +2,10 @@
   <div class="editor-container">
     <div class="editor-topbar">
       <div>编辑文章</div>
-      <div class="editor-topbar-btn">
+      <!-- <div class="editor-topbar-btn">
         <el-button type="success" :loading="savingArticle" @click="saveArticle">保存</el-button>
         <el-button type="success" :loading="postingArticle" @click="postArticle">发布</el-button>
-      </div>
+      </div>-->
     </div>
     <el-input v-model="articleInfo.title" placeholder="请输入标题"></el-input>
     <div>

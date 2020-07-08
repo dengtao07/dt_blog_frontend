@@ -259,7 +259,7 @@ export default {
       }
     }
     .article-container {
-      img {
+      ::v-deep img {
         max-width: 90%;
       }
     }
