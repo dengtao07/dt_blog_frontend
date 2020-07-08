@@ -258,6 +258,11 @@ export default {
         cursor: pointer;
       }
     }
+    .article-container {
+      img {
+        max-width: 90%;
+      }
+    }
     .article-comment {
       .comment-header {
         position: relative;
