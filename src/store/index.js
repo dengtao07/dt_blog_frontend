@@ -14,7 +14,7 @@ export default new Vuex.Store({
 		blogOrEssay: 'dev'
 	},
 	mutations: {
-		saveEcodeedHtml(state, encodeedHtml) {
+		saveEcodeedHtml(state, encodeedHtml ) {
 			state.encodeedHtml = encodeedHtml;
 		},
 		changeBackToTopShowable(state, payload) {
